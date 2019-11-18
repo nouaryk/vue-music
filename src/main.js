@@ -11,18 +11,17 @@ var users = null;
 import Buefy from 'buefy'
 var utils = require('./utils.js');
 import 'buefy/dist/buefy.css'
-import 'animate.css/animate.min.css'
+//import 'animate.css/animate.min.css'
 
 Vue.use(Buefy)
- 
+
 Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
-/* eslint-disable no-new */
+    /* eslint-disable no-new */
 new Vue({
     router,
     store,
     playlist,
     render: h => h(App),
 }).$mount('#app')
-
