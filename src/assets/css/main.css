@@ -1,0 +1,35 @@
+/* primary: #d01010 */
+
+.notification {
+  background: #23d160;
+  min-width: 350px;
+  position: fixed;
+  z-index: 9999;
+  padding: 12px;
+  top: 55px;
+  right: 10px;
+  color: #fff;
+  text-align: center;
+}
+.notification.error {
+  background-color: #9a2d2d;
+}
+
+.is-default:disabled {
+    background-color: #d01010;
+    color: #fff;
+    opacity: .4;
+}
+.is-default:disabled:hover {
+  opacity: .4;
+}
+.is-default {
+  background-color: #d01010;
+  color: #fff;
+  opacity: .8;
+}
+.is-default:hover {
+  opacity: 1;
+  color: #fff;
+  
+}

@@ -1,0 +1,24 @@
+//out: ../css/main.css
+
+//variables
+@color-error: #9a2d2d;
+@color-success: #23d160;
+@color-grey: #292929;
+
+.notification {
+    background: @color-success;
+    min-width: 350px;
+    position: fixed;
+    z-index: 9999;
+    padding: 12px;
+    top: 55px;
+    right: 10px;
+    color: #fff;
+    text-align: center;
+    &.error {
+        background-color: @color-error;
+    }
+}
+h6 {
+    color: red;
+}
