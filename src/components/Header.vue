@@ -1,5 +1,5 @@
 <template>
-    <b-navbar>
+    <b-navbar class="navbar-transparent">
         <template slot="brand">
             <!--<router-link to="/">
             <img src="~@/assets/images/logo.png">
@@ -13,14 +13,14 @@
         <template slot="end">
             <b-navbar-item tag="div">
             <div v-if="!$store.getters.logged"  class="buttons">
-            <router-link class="button is-light is-small" to="/login">Entrar</router-link>
+            <router-link class="button is-light is-small" to="/">Entrar</router-link>
             <router-link to="/register" class="button is-default ">Registrarse</router-link>
         </div>
 
         <div v-else class="buttons">
 
              <b-navbar-dropdown label="Mi perfil">
-              <router-link to="/account/dashboard" class="navbar-item" >Mis subidas</router-link>
+              <router-link to="/account/dashboard" class="navbar-item" >Mis Playlist</router-link>
               <router-link to="/account/settings" class="navbar-item">Preferencias</router-link>
             </b-navbar-dropdown>
 
@@ -57,3 +57,8 @@ export default {
 }
 </script>
 
+<style >
+.navbar-transparent {
+  background-color: transparent;
+}
+</style>

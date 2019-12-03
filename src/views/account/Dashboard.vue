@@ -1,10 +1,11 @@
 <template>
   <div>
+      
     <div class="columns is-multiline">
       <div v-if="playlists.length > 0" class="column is-12">
         <h1 class="title">Mis playlists ({{ playlists.length }}) <b-button @click="showPlaylistCreatorHandler" outlined class="button is-danger is-small "  to="/">Crear playlist</b-button></h1>
-        <li v-for="playlist in playlists">
-          {{ playlist.title }}
+        <li :key="playlist.id" v-for="playlist in playlists">
+          <a href="">{{ playlist.title }}</a> <i @click="deletePlaylist" :title="playlist.title" :id="playlist._id"  class="fas fa-trash-alt"></i>
         </li>
       </div>
 
@@ -52,9 +53,12 @@ export default {
 
   
   mounted() {
-      const loadingComponent = this.$buefy.loading.open({
-      })
-      this.getData(loadingComponent);
+    this.$router.title = 'lelel'
+    console.log('title', this.$router.title);
+      
+
+      this.loadPlaylists();
+      
   },
 
   methods: {
@@ -63,25 +67,66 @@ export default {
       this.openModalPlaylistCreator=true
     },
 
+    loadPlaylists() {
+      const loadingComponent = this.$buefy.loading.open({
+      })
+      this.getData(loadingComponent);
+    },
+
     getData(loading) {
-    axios.get("http://127.0.0.1:3000/getPlaylists")
-                .then((response) => {
-                    if (response.status == 200) {
-                      console.log(response.data)
-                      this.playlists = response.data;
-                      loading.close(); 
-                    }
-                }).catch((err) => {
-                    console.log('ERROR: ', err)
-                })
+      axios.get("http://127.0.0.1:3000/getPlaylists")
+      .then((response) => {
+      if (response.status == 200) {
+      console.log(response.data)
+      this.playlists = response.data;
+      loading.close(); 
+      }
+      }).catch((err) => {
+        loading.close(); 
+        console.log('ERROR: ', err)
+      })
       
     },
 
     onCancelCreatePlaylist() {
       this.$store.commit('CLOSE_PLAYLIST_CREATOR');
-    } 
-  },
+    },
 
-  
-}
+    deletePlaylist(e) {
+
+      const parent = this;
+       this.$buefy.dialog.confirm({
+          title: `Eliminar ${e.target.title} `,
+          message: '¿Estás seguro de que quieres eliminar esta playlist ?',
+          confirmText: 'Eliminar',
+          onConfirm: () => {
+             const id=e.target.id;
+              axios.post(`http://127.0.0.1:3000/playlist/delete/${id}`, {
+                data: {
+                  id: id
+              }})
+            .then((response) => {
+            if (response.status == 200) {
+              console.log(response.data)
+              this.loadPlaylists();
+            }
+            }).catch((err) => {
+              parent.getMessage('El servidor no responde, vuelve a intentarlo dentro de unos minutos.', 'is-warning');
+            });
+          }
+      })
+
+
+    },
+
+    getMessage(message, type, duration = 3000) {
+                this.$buefy.toast.open({
+                    duration: duration,
+                    message: message,
+                    type: type,
+                    queue: false
+                })
+  }
+  }
+  }
 </script>

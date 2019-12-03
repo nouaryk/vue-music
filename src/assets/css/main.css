@@ -1,5 +1,7 @@
-/* primary: #d01010 */
-
+body {
+  background: url("../images/bg1.jpg") no-repeat;
+  background-position: 35% 40%;
+}
 .notification {
   background: #23d160;
   min-width: 350px;
@@ -14,22 +16,6 @@
 .notification.error {
   background-color: #9a2d2d;
 }
-
-.is-default:disabled {
-    background-color: #d01010;
-    color: #fff;
-    opacity: .4;
-}
-.is-default:disabled:hover {
-  opacity: .4;
-}
-.is-default {
-  background-color: #d01010;
-  color: #fff;
-  opacity: .8;
-}
-.is-default:hover {
-  opacity: 1;
-  color: #fff;
-  
+h6 {
+  color: red;
 }

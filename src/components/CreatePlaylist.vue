@@ -39,22 +39,24 @@ import axios from "axios";
         methods: {
             create() {
                if(this.playlistName!='') {
-                   this.$buefy.toast.open({
-                        duration: 3000,
-                        message: `La playlist ${this.playlistName} se ha creado con éxito`,
-                        type: 'is-dark',
-                        queue: false
-                    })
+                   
                     // Add new playlist
-                    this.addPlaylist(this.playlistName);
+                    this.addPlaylist();
 
                     //this.$store.commit('ADD_PLAYLIST',this.playlistName)
                     // Empty playlist name
-                    this.playlistName = '';
+                   // this.playlistName = '';
                     
                     // Hide playlist creator component
                     this.$store.commit('CLOSE_PLAYLIST_CREATOR') 
                     this.$emit('close')// close modal
+                    } else {
+                         this.$buefy.toast.open({
+                            duration: 3000,
+                            message: `Introduce el título de la playlist`,
+                            type: 'is-warning',
+                            queue: false
+                        })
                     }
               
                 },
@@ -62,23 +64,34 @@ import axios from "axios";
                 cancel() {
                     this.$store.commit('CLOSE_PLAYLIST_CREATOR') 
                     this.$emit('close')
-                    
                 },
 
-                addPlaylist(data) {
-                    axios.post("http://127.0.0.1:3000/playlist/add", {
+                addPlaylist() {
+
+                    const parent=this;
+                    axios.post("http://127.0.0.1:3000/playlist/add",  {
                         data: {
-                            title: data
-                        }
-                    })
+                            title: this.playlistName,
+                            description: this.playlistName 
+                        }})
                     .then((response) => {
                         if (response.status == 200) {
-                        console.log(response.data)
+                            parent.getMessage(`La playlist <strong class="has-text-white">${this.playlistName}</strong> se ha creado con éxito`, 'is-success');
                         }
                     }).catch((err) => {
                         console.log('ERROR: ', err)
+                        parent.getMessage('El servidor no responde, vuelve a intentarlo dentro de unos minutos.', 'is-warning');
                     })
                 },
+                getMessage(message, type, duration = 3000) {
+                this.$buefy.toast.open({
+                    duration: duration,
+                    message: message,
+                    type: type,
+                    queue: false
+                })
+        }  
         }
+        
     }
 </script>

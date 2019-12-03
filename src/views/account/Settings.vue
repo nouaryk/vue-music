@@ -2,9 +2,10 @@
     <section class="columns">
       <div class="column is-5-desktop">
         <h1 class="title">Preferencias</h1>
+
         <b-field label="Correo electrónico">
               <b-input @keyup.native="checkForm" id="email" v-model="email" type="email"></b-input>
-          </b-field>
+         </b-field>
           <b-field label="Contraseña">
               <b-input @keyup.native="checkForm" v-model="password" type="password"></b-input>
           </b-field>
