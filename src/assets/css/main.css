@@ -1,3 +1,27 @@
+.login-input {
+  background-color: transparent;
+  color: #fff;
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid #c1c1c1;
+  padding: 0px;
+  width: 100%;
+  padding: 5px 5 5 0;
+}
+.login-input:focus {
+  outline: none;
+}
+/*
+2f1b41
+9f1e49
+fecd51
+f2f2f2
+*/
+body {
+  background-color: #2f1b41;
+  background-size: cover;
+  background-attachment: fixed;
+}
 .notification {
   background: #23d160;
   min-width: 350px;

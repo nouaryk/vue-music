@@ -2,7 +2,7 @@
     <div class="has-text-centered" v-if="$store.state.showPlaylistCreator">
         <h2 class="titled">Crear una nueva playlist</h2>
         <b-field type="is-danger">
-          <b-input native.autofocus @keyup.native.enter="create" v-model="playlistName"></b-input>
+          <b-input id="playlist-name"  @keyup.native.enter="create" v-model="playlistName"></b-input>
         </b-field>
 
         <b-button @click="cancel">Cancelar</b-button>
@@ -35,6 +35,10 @@ import axios from "axios";
                 playlistName: '',
                 close_modal: this.modal
             }
+        },
+
+        mounted() {
+            document.getElementById('playlist-name').focus();
         },
         methods: {
             create() {

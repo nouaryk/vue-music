@@ -1,6 +1,5 @@
 <template>
     <footer>
-      <hr />
             <a @click="legalAdvice">Condiciones de uso</a> |
             <router-link to="/contact" >Contacto</router-link>
     </footer>

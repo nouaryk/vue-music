@@ -1,14 +1,14 @@
 <template>
-    <div class="columns">
+    <div class="columns has-text-white">
       <div class="column is-12-desktop">
         <div class="columns is-centered">
           <div class="column is-5-desktop">
-             <b-field label="Email">
-               <b-input @keyup.native.enter="login" v-model="email"></b-input>
+             <b-field label="">
+               <input class="login-input" spellcheck="false" autofocus @keyup.enter="login" v-model="email"/>
               </b-field>
 
-               <b-field label="Password">
-               <b-input @keyup.native.enter="login" type="password" v-model="password"></b-input>
+               <b-field label="">
+               <input class="login-input"  @keyup.enter="login" type="password" v-model="password"/>
                
               </b-field>
               <a class="is-pulled-right" @click="resetPassword">Recuperar contraseña</a>
@@ -19,7 +19,7 @@
 <br>
 
 
-              <b-button @click="login" class="button  is-large is-success  is-fullwidth" outlined>Entrar</b-button>
+              <b-button :class="{'is-loading': isLoading}" @click="login" class="button  is-large is-success  is-fullwidth" outlined>Entrar</b-button>
           </div>
           
         </div>
@@ -52,7 +52,6 @@ export default {
             users: null
         }
     },
-
     methods: {
         login() {
             parent = this;
