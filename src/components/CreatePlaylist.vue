@@ -77,7 +77,7 @@ import axios from "axios";
                     .then((response) => {
                         if (response.status == 200) {
                             parent.getMessage(`La playlist <strong class="has-text-white">${this.playlistName}</strong> se ha creado con éxito`, 'is-success');
-                            this.$store.commit('UPDATE_PLAYLISTS', response.data.playlists); // update playlists 
+                            this.$store.commit('UPDATE_PLAYLISTS'); // update playlists 
                         }
                     }).catch((err) => {
                         console.log('ERROR: ', err)

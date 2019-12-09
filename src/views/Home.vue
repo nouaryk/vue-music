@@ -53,14 +53,7 @@ export default {
         }
     },
 
-    mounted() {
-        this._checkLoginStatus('IS_USER_LOGGED');
-       //utils.showNotification();
-       console.log(utils.showNotification());
-    },
-
     methods: {
-    
         login() {
             parent = this;
             parent.isLoading = true;

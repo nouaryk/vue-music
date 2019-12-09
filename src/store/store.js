@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from "axios";
 
 Vue.use(Vuex)
 
@@ -25,17 +26,21 @@ export const store = new Vuex.Store({
         ADD_PLAYLIST(state, playlist) {
             console.log('Playlist creada')
             state.playlists.push(playlist);
-            //state.showPlaylistCreator = false;
-            console.log(this.playlists)
         },
 
         SET_USER_PLAYLIST(state, playlist) {
 
         },
 
-        UPDATE_PLAYLISTS(state, playlists) {
-            state.user_playlist = playlists;
-            console.log(playlists)
+        UPDATE_PLAYLISTS(state, user_id = null) {
+            axios.get("http://127.0.0.1:3000/getPlaylists")
+                .then((response) => {
+                    if (response.status == 200) {
+                        state.user_playlist = response.data;
+                    }
+                }).catch((err) => {
+                    console.log('ERROR: ', err)
+                })
         },
 
         OPEN_PLAYLIST_CREATOR(state) {

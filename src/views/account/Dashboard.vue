@@ -2,9 +2,9 @@
   <div>
       
     <div class="columns is-multiline">
-      <div v-if="this.$store.state.user_playlist.length > 0" class="column is-12">
-        <h1 class="title">Mis playlists ({{ this.$store.state.user_playlist.length }}) <b-button @click="showPlaylistCreatorHandler" outlined class="button is-danger is-small "  to="/">Crear playlist</b-button></h1>
-        <li :key="playlist.id" v-for="playlist in this.$store.state.user_playlist">
+      <div v-if="$store.state.user_playlist.length > 0" class="column is-12">
+        <h1 class="title">Mis playlists ({{ $store.state.user_playlist.length }}) <b-button @click="showPlaylistCreatorHandler" outlined class="button is-danger is-small "  to="/">Crear playlist</b-button></h1>
+        <li :key="playlist.id" v-for="playlist in $store.state.user_playlist">
           <a href="">{{ playlist.title }}</a> <i @click="deletePlaylist" :title="playlist.title" :id="playlist._id"  class="fas fa-trash-alt"></i>
         </li>
       </div>
@@ -53,10 +53,7 @@ export default {
 
   
   mounted() {
-    this.$router.title = 'lelel'
-    console.log('title', this.$router.title);
-    this.loadPlaylists();
-      
+    this.playlists = this.$store.state.user_playlist;
   },
   methods: {
     showPlaylistCreatorHandler() {
@@ -65,25 +62,10 @@ export default {
     },
 
     loadPlaylists() {
-      const loadingComponent = this.$buefy.loading.open({
-      })
-      this.getData(loadingComponent);
+      const loadingComponent = this.$buefy.loading.open({})
     },
 
-    getData(loading) {
-      axios.get("http://127.0.0.1:3000/getPlaylists")
-      .then((response) => {
-      if (response.status == 200) {
-        console.log(response.data)
-        this.playlists = response.data;
-        loading.close(); 
-      }
-      }).catch((err) => {
-        loading.close(); 
-        console.log('ERROR: ', err)
-      })
-      
-    },
+   
 
     onCancelCreatePlaylist() {
       this.$store.commit('CLOSE_PLAYLIST_CREATOR');
@@ -104,7 +86,7 @@ export default {
               }})
             .then((response) => {
             if (response.status == 200) {
-              this.$store.commit('UPDATE_PLAYLISTS', response.data.playlists); // update playlists 
+              this.$store.commit('UPDATE_PLAYLISTS'); // update playlists 
             }
             }).catch((err) => {
               parent.getMessage('El servidor no responde, vuelve a intentarlo dentro de unos minutos.', 'is-warning');
@@ -122,7 +104,7 @@ export default {
                     type: type,
                     queue: false
                 })
-  }
-  }
+        }
+      }
   }
 </script>
