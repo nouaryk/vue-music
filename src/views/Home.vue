@@ -4,16 +4,16 @@
         <div class="columns is-centered">
           <div class="column is-5-desktop">
              <b-field label="">
-               <input class="login-input" spellcheck="false" autofocus @keyup.enter="login" v-model="email"/>
+               <input class="login-input" placeholder="Introduce tu dirección email..." spellcheck="false" autofocus @keyup.enter="login" v-model="email"/>
               </b-field>
 
                <b-field label="">
-               <input class="login-input"  @keyup.enter="login" type="password" v-model="password"/>
+               <input class="login-input" placeholder="**********"  @keyup.enter="login" type="password" v-model="password"/>
                
               </b-field>
-              <a class="is-pulled-right" @click="resetPassword">Recuperar contraseña</a>
+              <a class="is-pulled-right has-text-white" @click="resetPassword">Recuperar contraseña</a>
               
-              <b-checkbox native-value="Remember me">Remember me</b-checkbox>
+              <b-checkbox native-value="Remember me">Mantener sesión</b-checkbox>
               
 <br>
 <br>
@@ -136,7 +136,7 @@ export default {
   color: green;
 }
 a {
-  color: #525252;
+  color: #fecd51;
 }
 </style>
 

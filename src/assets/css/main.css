@@ -11,6 +11,18 @@
 .login-input:focus {
   outline: none;
 }
+.custom-navbar {
+  background-color: transparent;
+}
+.custom-navbar a {
+  color: #fff;
+}
+.custom-navbar li {
+  color: #fff;
+}
+.custom-navbar .menu-item {
+  margin-left: 10px;
+}
 /*
 2f1b41
 9f1e49
@@ -18,7 +30,7 @@ fecd51
 f2f2f2
 */
 body {
-  background-color: #2f1b41;
+  background-color: #625772;
   background-size: cover;
   background-attachment: fixed;
 }
