@@ -30,15 +30,12 @@ export const store = new Vuex.Store({
         },
 
         SET_USER_PLAYLIST(state, playlist) {
-            axios.get("http://127.0.0.1:3000/getPlaylists")
-                .then((response) => {
-                    if (response.status == 200) {
-                        state.user_playlist.push(response.data)
-                    }
-                }).catch((err) => {
-                    console.log('ERROR: ', err)
-                })
 
+        },
+
+        UPDATE_PLAYLISTS(state, playlists) {
+            state.user_playlist = playlists;
+            console.log(playlists)
         },
 
         OPEN_PLAYLIST_CREATOR(state) {
