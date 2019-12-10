@@ -38,9 +38,8 @@ export default {
   name: 'app-header',
 
   mounted() {
-    console.log('mounted', this.$store.getters.logged);
+      this.$store.commit('SET_USER_LOGGED', this.$session.exists());
   },
-  
   methods: {
     logout() {
       this.$buefy.dialog.confirm({
@@ -48,8 +47,8 @@ export default {
           message: '¿Estás seguro de que quieres cerrar la sesión ?',
           confirmText: 'Cerrar sesión',
           onConfirm: () => {
-            this.$store.commit('LOGOUT')
-            this.$buefy.toast.open('Hasta luego Lucas')
+            this.$session.destroy();
+            this.$store.commit('SET_USER_LOGGED', false);
             this.$router.push('/')
           }
       })
