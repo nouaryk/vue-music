@@ -14,11 +14,8 @@
               <a class="is-pulled-right has-text-white" @click="resetPassword">Recuperar contraseña</a>
               
               <b-checkbox native-value="Remember me">Mantener sesión</b-checkbox>
-              
-<br>
-<br>
-
-
+            <br>
+            <br>
               <b-button :class="{'is-loading': isLoading}" @click="login" class="button  is-large is-success  is-fullwidth" outlined>Entrar</b-button>
           </div>
           
@@ -44,13 +41,18 @@ import utils from "../utils";
 export default {
 
     data() {
-
         return {
             email: 'nouaryk@protonmail.ch',
             password: '',
             isLoading: false,
             users: null
         }
+    },
+
+
+    mounted() {
+        console.log(this.$session.getAll())
+        console.log(this.$session.exists())
     },
     methods: {
         login() {
@@ -65,14 +67,16 @@ export default {
                 .then((response) => {
                     parent.isLoading = false;
                     if (response.status == 200) {
-                        console.log(response.data);
+                        this.$session.start()
+                        this.$session.set('auth_session', response.data.auth_token)
+                        this.$store.commit('SET_USER_LOGGED', true);
                         this._checkLoginStatus(response.data.status);
+                        
                     }
                 }).catch((err) => {
-                        parent.isLoading = false;
-                        console.log('not responding bruh')
-                        this._checkLoginStatus('NOT_RESPONDING');
-
+                    console.log(err)
+                    parent.isLoading = false;
+                    this._checkLoginStatus('NOT_RESPONDING');
                     return err;
                 })
         },
@@ -84,6 +88,7 @@ export default {
                     this.$store.commit('LOGIN')
                     this.getMessage(`Has iniciado sesión.`, 'is-success');
                     this.$router.push('/account/dashboard');
+                    
                 break;
                  case 'USER_LOGIN_FAILED': 
                     this.getMessage('Parece que el Email o la contraseña son incorrectos.', 'is-warning');
