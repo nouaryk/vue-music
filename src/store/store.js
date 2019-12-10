@@ -18,18 +18,13 @@ export const store = new Vuex.Store({
             console.log('LOGGED IN')
             state.logged = true;
         },
-        LOGOUT: (state) => {
-            console.log('LOGGED OUT')
-            state.logged = false;
-        },
-
         ADD_PLAYLIST(state, playlist) {
             console.log('Playlist creada')
             state.playlists.push(playlist);
         },
 
-        SET_USER_PLAYLIST(state, playlist) {
-
+        SET_USER_LOGGED(state, session) {
+            state.logged = session;
         },
 
         UPDATE_PLAYLISTS(state, user_id = null) {
