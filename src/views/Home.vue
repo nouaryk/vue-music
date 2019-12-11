@@ -1,147 +1,178 @@
 <template>
-    <div class="columns has-text-white">
-      <div class="column is-12-desktop">
-        <div class="columns is-centered">
-          <div class="column is-5-desktop">
-             <b-field label="">
-               <input class="login-input" placeholder="Introduce tu dirección email..." spellcheck="false" autofocus @keyup.enter="login" v-model="email"/>
-              </b-field>
+    <section class="hero is-fullheight-with-navbar has-text-white">
+            <div class="hero-body">
+                <div class="container">
+                <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="true">
+                    <b-icon
+                        pack="fas"
+                        icon="sync-alt"
+                        size="is-large"
+                        custom-class="fa-spin">
+                    </b-icon>
+                </b-loading>
 
-               <b-field label="">
-               <input class="login-input" placeholder="**********"  @keyup.enter="login" type="password" v-model="password"/>
-               
-              </b-field>
-              <a class="is-pulled-right has-text-white" @click="resetPassword">Recuperar contraseña</a>
-              
-              <b-checkbox native-value="Remember me">Mantener sesión</b-checkbox>
-            <br>
-            <br>
-              <b-button :class="{'is-loading': isLoading}" @click="login" class="button  is-large is-success  is-fullwidth" outlined>Entrar</b-button>
-          </div>
-          
-        </div>
+                <!-- LOGIN COMPONENT -->
+                <div v-if="!$store.state.logged">
+                    <app-login></app-login>
+                </div>
+                <!-- END LOGIN COMPONENT -->
+        
+            <!-- SEARCH BOX -->
+            <div v-else class="columns is-centered is-multiline">
+                <div class="column is-12">
+                    <input autofocus spellcheck="false" v-model="songName" @keyup="errorMessage=''" @keyup.enter="searchSong" placeholder="Nombre de la canción o album..." class="search-song" />
+                    <p class="error">{{errorMessage}}</p>
+                </div>
+                <div  class="column is-1 song-cover" :key="song.id" v-for="song in songsList" 
+                :style="{ 'background-image': 'url(' + song.album.cover_medium + ')' }">
+                <div class="overlay-song-info">
+                    <div class="song-info" :id="song.id">
+                        <i class="fas fa-plus-square"></i><br/>
+                        <span>{{song.title}}</span>
+                    </div>
+                </div>
+                    
 
-        <div class="columns is-centered">
-          <div class="column is-5">
-              <b-button  class="button is-info  is-fullwidth" @click="$router.push('register')" outlined>Crear una cuenta</b-button>
-          </div>
-          
-        </div>
-      </div>
+                </div>
+            </div>
+            <!-- END SEARCH BOX -->
+            </div>
 
-    </div>
-
-    
+            </div>
+        </section>
 </template>
+
+<style>
+.song-cover {
+    transition-duration: .4s;
+    height: 249px;
+    width: 250px !important;
+    transform: scale(.7);
+    position: relative;
+}
+.song-cover:hover .overlay-song-info {
+    display: block;
+}
+.song-info {
+    transition-duration: .4s;
+    font-size: 6em;
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.overlay-song-info {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.81);
+}
+
+.error {
+    font-size: .8em;
+    text-align: center;
+    color: #e66464;
+    padding: 3px;
+}
+.song {
+    background-color: #000;
+    margin-left: 10px;
+  
+}
+.search-song {
+    height: 40px;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #888;
+    background-color: transparent;
+    color: #ddd;
+    text-align: center;
+    font-size: 1.3em;
+    transition-duration: .4s;
+}
+.search-song::placeholder {
+    color: #ddd;
+}
+.search-song:focus {
+    outline: none;
+    border-color: #fff;
+}
+
+.song-info span {
+    font-size: 22px;
+    color: white;
+}
+
+</style>
 
 <script>
 import axios from "axios";
-import utils from "../utils";
+import Login from '@/Components/Login'
 
 export default {
+  components: {
+      'app-login' : Login
+    },
 
     data() {
         return {
-            email: 'nouaryk@protonmail.ch',
-            password: '',
-            isLoading: false,
-            users: null
+            songName: '',
+            songsList: [],
+            errorMessage: '',
+            currentSong: '',
+            isLoading: false
         }
     },
 
-
-    mounted() {
-        console.log(this.$session.getAll())
-        console.log(this.$session.exists())
-    },
     methods: {
-        login() {
-            parent = this;
-            parent.isLoading = true;
-
-            axios.post("http://127.0.0.1:3000/login",  {
-            data: {
-                email: this.email,
-                password: this.password 
-            }})
-                .then((response) => {
-                    parent.isLoading = false;
-                    if (response.status == 200) {
-                        this.$session.start()
-                        this.$session.set('auth_session', response.data.auth_token)
-                        this.$store.commit('SET_USER_LOGGED', true);
-                        this._checkLoginStatus(response.data.status);
-                        
+        searchSong(e) {
+            if(this.songName.length > 2) {
+                this.isLoading = true;
+                axios({
+                    "method":"GET",
+                    "url":"https://deezerdevs-deezer.p.rapidapi.com/search",
+                    "headers":{
+                    "content-type":"application/octet-stream",
+                    "x-rapidapi-host":"deezerdevs-deezer.p.rapidapi.com",
+                    "x-rapidapi-key":"b11d15210emshd9317db6c39b79ep1130adjsnefb3bc7a146a"
+                    },"params":{
+                    "q": this.songName
                     }
-                }).catch((err) => {
-                    console.log(err)
-                    parent.isLoading = false;
-                    this._checkLoginStatus('NOT_RESPONDING');
-                    return err;
                 })
-        },
-
-        _checkLoginStatus(status) {
-
-            switch(status) {
-                case 'USER_LOGIN_SUCCESS':
-                    this.$store.commit('LOGIN')
-                    this.getMessage(`Has iniciado sesión.`, 'is-success');
-                    this.$router.push('/account/dashboard');
-                    
-                break;
-                 case 'USER_LOGIN_FAILED': 
-                    this.getMessage('Parece que el Email o la contraseña son incorrectos.', 'is-warning');
-
-                break;
-
-                case 'IS_USER_LOGGED': 
-
-                break;
-
-                case 'NOT_RESPONDING':
-                    this.getMessage('El servidor no responde, vuelve a intentarlo dentro de unos minutos.', 'is-warning');
-                break;
-
-
+                .then((response)=>{
+                    if(response.status==200) {
+                        this.isLoading = false;
+                        const dataSongs = JSON.stringify(response.data.data);
+                        this.songsList = response.data.data;
+                        console.log(dataSongs);
+                        if(this.songsList.length===0) {
+                            this.errorMessage = 'No hay resultado para la búsqueda.';
+                        }
+                    }
+                })
+                .catch((error)=>{
+                    this.isLoading = false;
+                    this.errorMessage = 'Ha ocurrido un error con la búsqueda, intentalo más tarde.'
+                })
+            } else {
+                this.errorMessage = 'Introduce el nombre de la canción/album o artista.'
             }
         },
 
-        getMessage(message, type, duration = 3000) {
-            this.$buefy.toast.open({
-                duration: duration,
-                message: message,
-                type: type,
-                queue: false
+        showSongInfo(song_id, e) {
+            this.currentSong = song_id;
+            Array.from(document.querySelectorAll('.song-info')).forEach((getVisibleSong) => {
+                console.log(getVisibleSong)
+                getVisibleSong.classList.add('is-hidden');
             })
-        },
-
-        resetPassword() {
-            this.$buefy.dialog.prompt({
-                message: `Introduce tu correo electrónico`,
-                inputAttrs: {
-                    placeholder: 'admin@protonmail.com',
-                    maxlength: 20,
-                    type: 'email'
-                },
-                trapFocus: true,
-                onConfirm: (value) => {
-                    this.$buefy.toast.open(`En breve recibirás un email para recuperar tu contraseña.`)
-                }
-            })
+            document.getElementById(song_id).className = 'song-info';
         }
+    
     }
 }
 </script>
-
-<style>
-.is-t-success {
-  background-color: transparent;
-  border-color: green;
-  color: green;
-}
-a {
-  color: #fecd51;
-}
-</style>
-

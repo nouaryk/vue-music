@@ -11,12 +11,9 @@ Vue.use(Router)
 
 export default new Router({
     routes: [{
-            meta: {
-                title: 'PEPEPEPEPEPEPE',
-            },
             path: '/',
             component: Home,
-            name: 'Home'
+            name: 'Home',
         },
         {
             path: '/register',

@@ -59,8 +59,13 @@ export default {
               .then((response) => {
                 parent.isLoading = false;
               if (response.status == 200) {
-                console.log(response.data);
                 this._checkLoginStatus(response.data.status);
+                  
+                  if(response.data.status === 'USER_LOGIN_SUCCESS') {
+                    this.$session.start()
+                    this.$session.set('auth_session', response.data.auth_token)
+                    this.$store.commit('SET_USER_LOGGED', true);
+                }
               }
               }).catch((err) => {
                 parent.isLoading = false;

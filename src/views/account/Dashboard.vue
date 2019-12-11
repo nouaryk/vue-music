@@ -7,8 +7,9 @@
         <li :key="playlist.id" v-for="playlist in $store.state.user_playlist">
           <a class="has-text-white" :class="{'is-hidden': editMode && editingPlaylist==playlist._id }" href="">{{ playlist.title }}</a>
           <div class="column is-4" v-if="editMode && editingPlaylist==playlist._id">
-            <b-input @keyup.native="(e) =>playlistTitle=e.target.value" v-model="playlist.title"></b-input>
-            <b-button :class="{'is-loading': isLoading}" :disabled="playlistTitle==''"  @click="savePlaylist" class="button is-success is-fullwidth">Save</b-button>
+            <b-input @keyup.native.enter="savePlaylist" @keyup.native="(e) =>playlistTitle=e.target.value" v-model="playlist.title"></b-input>
+            <b-button  :class="{'is-loading': isLoading}" :disabled="playlistTitle==''"  @click="savePlaylist" class="button is-success is-fullwidth">Save</b-button>
+            <a href="">Cancelar</a>
           </div>
 
           <div v-else>

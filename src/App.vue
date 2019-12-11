@@ -1,12 +1,25 @@
 <template>
 
-  <div class="container" id="app">
-    <app-header></app-header>    
+  <div class="columns">
+    <div class="column is-1">
+      <sidebar-menu></sidebar-menu>
+
+    </div>
+    <div class="column">
+    <div class="container" id="app">
+      
+      <router-view/>
+
+      <app-footer></app-footer>
+
+    </div>
+    </div>
     
-    <router-view/>
+    
 
-    <app-footer></app-footer>
+  
 
+  
   </div>
 </template>
 
@@ -19,11 +32,13 @@
   
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import SideBarMenu from '@/components/SideBarMenu'
 export default {
   name: 'App',
   components: {
     'app-header': Header,
-    'app-footer': Footer
+    'app-footer': Footer,
+    'sidebar-menu': SideBarMenu
   }
 }
 

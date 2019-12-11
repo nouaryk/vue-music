@@ -9,9 +9,15 @@ import { playlist } from './store/playlist'
 
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
-//import 'animate.css/animate.min.css'
+import 'animate.css/animate.min.css'
 
 
+import VueSession from 'vue-session'
+var options = {
+    persist: true
+}
+
+Vue.use(VueSession, options)
 Vue.use(Buefy)
 
 Vue.prototype.$http = axios
