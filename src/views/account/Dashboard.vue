@@ -1,12 +1,14 @@
 <template>
-  <div>
-      
-    <div class="columns is-multiline has-text-white">
-      <div v-if="$store.state.user_playlist.length > 0" class="column is-12">
-        <h1 class="title has-text-white">Mis playlists ({{ $store.state.user_playlist.length }}) <b-button @click="showPlaylistCreatorHandler" outlined class="button is-danger is-small "  to="/">Crear playlist</b-button></h1>
+<section>
+  <div v-if="$store.state.user_playlist.length > 0" class="column has-text-white ">
+        <h2 class="title">Mis playlists ({{ $store.state.user_playlist.length }}) 
+          <b-button @click="showPlaylistCreatorHandler" outlined class="button is-warning "  to="/">Crear playlist</b-button>
+          </h2>
         <li :key="playlist.id" v-for="playlist in $store.state.user_playlist">
-          <a class="has-text-white" :class="{'is-hidden': editMode && editingPlaylist==playlist._id }" href="">{{ playlist.title }}</a>
-          <div class="column is-4" v-if="editMode && editingPlaylist==playlist._id">
+          
+          <a class="has-text-white" :class="{'is-hidden': editMode && editingPlaylist==playlist._id }" click="">{{ playlist.title }}</a>
+          
+          <div class="column is-5" v-if="editMode && editingPlaylist==playlist._id">
             <b-input @keyup.native.enter="savePlaylist" @keyup.native="(e) =>playlistTitle=e.target.value" v-model="playlist.title"></b-input>
             <b-button  :class="{'is-loading': isLoading}" :disabled="playlistTitle==''"  @click="savePlaylist" class="button is-success is-fullwidth">Save</b-button>
             <a href="">Cancelar</a>
@@ -18,36 +20,36 @@
         </li>
       </div>
 
-      <div v-else class="column is-12">
+      <div v-else class="column is-12 has-white-text">
         <p><i>No tienes ninguna playlist.</i> <b-button @click="showPlaylistCreatorHandler" outlined class="button is-danger is-small "  to="/">Crear playlist</b-button> </p>
+      
       </div>
-
-    </div>
-
-    <b-modal custom-class="pepepepepe"  :component="CreatePlaylist" :active.sync="openModalPlaylistCreator"
-      :can-cancel="true" :on-cancel="onCancelCreatePlaylist" >
+ 
+  <b-modal :component="CreatePlaylist" :active.sync="openModalPlaylistCreator"
+      :can-cancel="true" :on-cancel="onCancelCreatePlaylist">
     </b-modal>
-
-  </div>
+</section>
 </template>
 
 <style>
+h1 {
+  color: #fff;
+}
 li {
   list-style: none;
   font-size: 1.4em;
 }
-  .thumbnail {
-    opacity: .5;
-    cursor: pointer;
-    transition-duration: .4s;
-  }
-  
-  .selected {
-    opacity: .9;
-  }
-  .preview {
-    max-width: 800px;
-  }
+.thumbnail {
+  opacity: .5;
+  cursor: pointer;
+  transition-duration: .4s;
+}
+.selected {
+  opacity: .9;
+}
+.preview {
+  max-width: 800px;
+}
 </style>
 
 <script>

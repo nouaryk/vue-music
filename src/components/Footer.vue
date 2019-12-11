@@ -1,8 +1,8 @@
 <template>
-    <footer>
+    <!--<footer>
             <a @click="legalAdvice">Condiciones de uso</a> |
             <router-link to="/contact" >Contacto</router-link>
-    </footer>
+    </footer>-->
 </template>
 
 <script>

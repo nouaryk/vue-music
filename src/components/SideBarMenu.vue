@@ -1,4 +1,5 @@
 <template>
+<div class="column is-1">
     <section class="sidebar-menu">
         <ul>
             <li :class="{'small-text': !shown}" @click="$router.push('/')" class="active">
@@ -37,6 +38,7 @@
             </li>
         </ul>
     </section>
+    </div>
 
 </template>
 

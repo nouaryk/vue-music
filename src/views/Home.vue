@@ -1,4 +1,6 @@
 <template>
+<div class="column">
+
     <section class="hero is-fullheight-with-navbar has-text-white">
             <div class="hero-body">
                 <div class="container">
@@ -20,6 +22,7 @@
             <!-- SEARCH BOX -->
             <div v-else class="columns is-centered is-multiline">
                 <div class="column is-12">
+                    <h1>Buscar</h1>
                     <input autofocus spellcheck="false" v-model="songName" @keyup="errorMessage=''" @keyup.enter="searchSong" placeholder="Nombre de la canción o album..." class="search-song" />
                     <p class="error">{{errorMessage}}</p>
                 </div>
@@ -40,9 +43,15 @@
 
             </div>
         </section>
+            
+</div>
 </template>
 
 <style>
+h1 {
+    font-size: 3em;
+    text-align: center;
+}
 .song-cover {
     transition-duration: .4s;
     height: 249px;
@@ -60,6 +69,8 @@
     width: 100%;
     height: 100%;
     text-align: center;
+    cursor: pointer;
+
 }
 .overlay-song-info {
     display: none;
@@ -134,14 +145,14 @@ export default {
             if(this.songName.length > 2) {
                 this.isLoading = true;
                 axios({
-                    "method":"GET",
-                    "url":"https://deezerdevs-deezer.p.rapidapi.com/search",
-                    "headers":{
-                    "content-type":"application/octet-stream",
-                    "x-rapidapi-host":"deezerdevs-deezer.p.rapidapi.com",
-                    "x-rapidapi-key":"b11d15210emshd9317db6c39b79ep1130adjsnefb3bc7a146a"
-                    },"params":{
-                    "q": this.songName
+                        "method":"GET",
+                        "url":"https://deezerdevs-deezer.p.rapidapi.com/search",
+                        "headers":{
+                        "content-type":"application/octet-stream",
+                        "x-rapidapi-host":"deezerdevs-deezer.p.rapidapi.com",
+                        "x-rapidapi-key":"b11d15210emshd9317db6c39b79ep1130adjsnefb3bc7a146a"
+                        },"params":{
+                        "q": this.songName
                     }
                 })
                 .then((response)=>{
