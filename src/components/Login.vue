@@ -3,6 +3,7 @@
       <div class="column is-12-desktop">
         <div class="columns is-centered">
           <div class="column is-5-desktop">
+              <h1>Iniciar sesión</h1>
              <b-field label="">
                <input class="login-input" placeholder="Introduce tu dirección email..." spellcheck="false" autofocus @keyup.enter="login" v-model="email"/>
               </b-field>
@@ -68,8 +69,13 @@ export default {
                     if (response.status == 200) {
                         this._checkLoginStatus(response.data.status);
                         if(response.data.status === 'USER_LOGIN_SUCCESS') {
+                            console.log(response.data)
                             this.$session.start()
-                            this.$session.set('auth_session', response.data.auth_token)
+                            this.$session.set('auth_session.email', this.email);
+                            this.$session.set('auth_session.password', this.password);
+                            this.$session.set('auth_session.logged', true);
+                            this.$session.set('auth_session.token', response.data.auth_token);
+                          
                             this.$store.commit('SET_USER_LOGGED', true);
                         }
                     }
@@ -91,7 +97,7 @@ export default {
                     
                 break;
                  case 'USER_LOGIN_FAILED': 
-                    this.getMessage('Parece que el Email o la contraseña son incorrectos.', 'is-warning');
+                    this.getMessage('Parece que el Email o la contraseña son incorrectos.', 'is-warning is-top-right');
 
                 break;
 

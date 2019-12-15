@@ -6,12 +6,14 @@
           </h2>
         <li :key="playlist.id" v-for="playlist in $store.state.user_playlist">
           
-          <a class="has-text-white" :class="{'is-hidden': editMode && editingPlaylist==playlist._id }" click="">{{ playlist.title }}</a>
+          <a class="has-text-white songname" :class="{'is-hidden': editMode && editingPlaylist==playlist._id }" click="">{{ playlist.title }} <span>{{playlist.songs.length}} songs</span></a>
           
-          <div class="column is-5" v-if="editMode && editingPlaylist==playlist._id">
+          <div class="column is-12 is-relative" v-if="editMode && editingPlaylist==playlist._id">
             <b-input @keyup.native.enter="savePlaylist" @keyup.native="(e) =>playlistTitle=e.target.value" v-model="playlist.title"></b-input>
             <b-button  :class="{'is-loading': isLoading}" :disabled="playlistTitle==''"  @click="savePlaylist" class="button is-success is-fullwidth">Save</b-button>
-            <a href="">Cancelar</a>
+            <a class="cancel is-pulled-right" @click="() => editMode=false">
+              <i class="fas fa-times"></i>
+            </a>
           </div>
 
           <div v-else>
@@ -39,6 +41,17 @@ li {
   list-style: none;
   font-size: 1.4em;
 }
+
+a.cancel {
+  font-size: .8em;
+  position: absolute;
+  color: #ececec;
+  right: 20px;
+  top: 20px;
+}
+a.cancel:hover {
+  color: #afafaf;
+}
 .thumbnail {
   opacity: .5;
   cursor: pointer;
@@ -49,6 +62,11 @@ li {
 }
 .preview {
   max-width: 800px;
+}
+
+a.songname span {
+  font-size: .6em;
+  color: #ddd;
 }
 </style>
 
@@ -116,8 +134,7 @@ export default {
     },
 
     savePlaylist() {
-        this.isLoading = true;
-
+      this.isLoading = true;
       if(this.playlistTitle !=='') {
         axios.post(`http://127.0.0.1:3000/playlist/edit/${this.editingPlaylist}`, {
           data: {
@@ -128,21 +145,15 @@ export default {
             if (response.status == 200) {
               this.getMessage('Se ha actualizado el nombre de tu playlist.', 'is-success');
               this.editMode = false;
-        this.isLoading = false;
-
+              this.isLoading = false;
             }
         }).catch((err) => {
             console.log('ERROR: ', err)
             this.getMessage('Ha ocurrido un error, no se ha podido actualizar la playlist...', 'is-warning');
             this.editMode = false;
-        this.isLoading = false;
-
+            this.isLoading = false;
         })
-
-
-        
       }
-
     },
 
     getMessage(message, type, duration = 3000) {

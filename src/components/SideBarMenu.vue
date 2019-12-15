@@ -2,26 +2,25 @@
 <div class="column is-1">
     <section class="sidebar-menu">
         <ul>
-            <li :class="{'small-text': !shown}" @click="$router.push('/')" class="active">
+            <li id="menu-item-1" :class="{'small-text': !shown}" @click="goto('/', 1)" class="active">
                 <i class="fas fa-home"></i> <br /><span v-if="shown">Inicio</span>
             </li>
             
-            <li v-if="$store.state.logged" :class="{'small-text': !shown}" @click="$router.push('/account/dashboard')">
+            <li id="menu-item-2" v-if="$store.state.logged" :class="{'small-text': !shown}" @click="goto('/account/dashboard', 2)">
                 <i class="fas fa-music"></i> <br /><span v-if="shown">Playlists</span>
             </li>
 
-            <li v-if="$store.state.logged" :class="{'small-text': !shown}" @click="$router.push('/account/settings')">
+            <li id="menu-item-3" v-if="$store.state.logged" :class="{'small-text': !shown}" @click="goto('/account/settings', 3)">
                 <i class="fas fa-user-alt"></i> <br /><span v-if="shown">Mi perfil</span>
             </li>
 
-            <li v-if="!$store.state.logged" :class="{'small-text': !shown}" @click="$router.push('/')">
+            <li id="menu-item-4" v-if="!$store.state.logged" :class="{'small-text': !shown}" @click="goto('/', 4)">
                 <i class="fas fa-lock"></i> <br /><span v-if="shown">Entrar</span>
             </li>
-            <li v-if="!$store.state.logged" :class="{'small-text': !shown}" @click="$router.push('/register')">
+            <li id="menu-item-5" v-if="!$store.state.logged" :class="{'small-text': !shown}" @click="goto('/register', 5)">
                 <i class="fas fa-user-plus"></i> <br /><span v-if="shown">Registro</span>
             </li>
 
-           
             
             <li class="bottom" :class="{'small-text': !shown}" @click="() => {
                 if(shown) {
@@ -102,12 +101,20 @@ import axios from "axios";
         data:  () => {
             return {
                 shown: true
-                
             }
         },
 
         mounted() {
-            this.$store.commit('SET_USER_LOGGED', this.$session.exists());
+            let session_token;
+            if(this.$session.exists()) {
+                session_token = this.$session.get('auth_session.token');
+            }
+            this.$store.commit('CHECK_USER_AUTH', {
+                email: this.$session.get('auth_session.email'),
+                password: this.$session.get('auth_session.password'),
+                logged: this.$session.get('auth_session.logged'),
+                token: session_token
+            });
         },
         methods: {
             hideSideBar() {
@@ -131,14 +138,21 @@ import axios from "axios";
                     }
                 })
             },
-
+            goto(url, id) {
+                Array.from(document.querySelectorAll('.active')).forEach((active) => {
+                    active.classList.remove('active');
+                })
+                document.getElementById(`menu-item-${id}`).className = 'active';
+                
+                this.$router.push(url);
+            },
             getMessage(message, type, duration = 3000) {
-            this.$buefy.toast.open({
-                duration: duration,
-                message: message,
-                type: type,
-                queue: false
-            })
+                this.$buefy.toast.open({
+                    duration: duration,
+                    message: message,
+                    type: type,
+                    queue: false
+                })
             }  
         }
     }

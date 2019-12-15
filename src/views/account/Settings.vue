@@ -1,5 +1,4 @@
 <template>
-    <section class="columns">
       <div class="column is-5-desktop">
         <h1 class="title">Preferencias</h1>
 
@@ -15,7 +14,6 @@
 
           <b-button @click="save" :disabled="isDisabled" class="button is-default is-fullwidth">Guardar</b-button>
         </div>
-    </section>
 </template>
 
 <style>

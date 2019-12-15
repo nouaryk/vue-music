@@ -1,9 +1,11 @@
 <template>
-  <div class="columns is-centered">
-    <div class="column is-4-desktop ">
+            
+    <section class="hero is-fullheight-with-navbar has-text-white">
+        <div class="hero-body">
+            <div class="container">
+      <div class="column is-5-desktop">
 
       <h1 class="title">Crear cuenta</h1>
-      <form>
         <b-field label="Correo electrónico">
           <b-input v-model="email" autofocus id="Email" type="text"></b-input>
         </b-field>
@@ -16,16 +18,17 @@
         </b-field>
 
 
-
         <div class="field has-text-right">
           <b-button @click="register" :class="{ 'is-loading': isLoading }" class="button is-link is-fullwidth">Crear cuenta</b-button>
 
           <p>¿Ya tienes una cuenta? <a @click="$router.push('/')">Iniciar sesión</a></p>
         </div>
 
-      </form>
     </div>
-  </div>
+    </div>
+    </div>
+    </section>
+    
 </template>
 
 <script>
@@ -83,15 +86,15 @@ export default {
                     this.$store.commit('LOGIN')
                 break;
                 case 'USER_CREATED_FAILED': 
-                    this.getMessage('Por favor rellena todos los campos y vuelve a intentarlo.', 'is-warning');
+                    this.getMessage('Por favor rellena todos los campos y vuelve a intentarlo.', 'is-warning is-top-right');
                 break;
 
                 case 'USER_CREATED_ALREADY_EXISTS': 
-                    this.getMessage('Ya existe una cuenta con este email, si te has olvidado la contraseña puedes restablecerla.', 'is-warning', 5000);
+                    this.getMessage('Ya existe una cuenta con este email, si te has olvidado la contraseña puedes restablecerla.', 'is-warning is-top-right', 5000);
                 break;
 
                 case 'NOT_RESPONDING':
-                    this.getMessage('El servidor no responde, vuelve a intentarlo dentro de unos minutos.', 'is-warning');
+                    this.getMessage('El servidor no responde, vuelve a intentarlo dentro de unos minutos.', 'is-warning is-top-right');
                 break;
             }
         },
