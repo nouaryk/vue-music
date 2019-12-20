@@ -1,7 +1,10 @@
 <template>
 
-  <div class="columns">
+  <div class="columns is-multiline">
       <sidebar-menu></sidebar-menu>
+
+      <b-loading :is-full-page="isFullPage" :active.sync="$store.state.isLoading" :can-cancel="true"></b-loading>
+
       <router-view/>
 
       <app-footer></app-footer>
@@ -26,7 +29,20 @@ export default {
     'app-header': Header,
     'app-footer': Footer,
     'sidebar-menu': SideBarMenu
-  }
+  },
+
+  data() {
+    return {
+      isFullPage: true
+    }
+  },
+
+   watch: {
+        $route(to, from) {
+            document.title = to.meta.title || 'Piedrify | Inicio';
+        },
+    }
+    
 }
 
 </script>

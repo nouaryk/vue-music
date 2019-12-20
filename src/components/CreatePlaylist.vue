@@ -4,7 +4,7 @@
         <b-field type="is-danger">
           <b-input id="playlist-name"  @keyup.native.enter="create" v-model="playlistName"></b-input>
         </b-field>
-
+        {{ perPage }}
         <b-button @click="cancel">Cancelar</b-button>
         <b-button @click="create" class="is-success" outlined>Crear</b-button>
      </div>
@@ -29,7 +29,7 @@
 import axios from "axios";
     export default {
         name: 'create-playlist',
-        props: ['modal'],
+        props: ['modal', 'perPage'],
         data:  () => {
             return {
                 playlistName: '',
@@ -81,7 +81,18 @@ import axios from "axios";
                     .then((response) => {
                         if (response.status == 200) {
                             parent.getMessage(`La playlist <strong class="has-text-white">${this.playlistName}</strong> se ha creado con éxito`, 'is-success');
-                            this.$store.commit('UPDATE_PLAYLISTS'); // update playlists 
+
+                            const playlist_settings = {
+                                limitFrom: this.$store.state.savedPagination.limitFrom,
+                                perPage: this.$store.state.savedPagination.perPage,
+                                NUMBER_OF_ITEMS: this.$store.state.savedPagination.NUMBER_OF_ITEMS,
+                                PAGE_NUMBER: this.$store.state.savedPagination.PAGE_NUMBER,
+                                REQUEST_TYPE_GET_ALL: false
+                            }
+
+                            
+                            this.$store.commit('SET_PAGINATION', playlist_settings);
+                            this.$store.commit('UPDATE_PLAYLISTS', playlist_settings);
                         }
                     }).catch((err) => {
                         console.log('ERROR: ', err)

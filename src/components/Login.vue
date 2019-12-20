@@ -1,6 +1,10 @@
 <template>
-    <div class="columns has-text-white">
-      <div class="column is-12-desktop">
+
+    <div v-else class="column">
+    <section class="hero is-fullheight-with-navbar has-text-white">
+        <div class="hero-body">
+            <div class="container">
+
         <div class="columns is-centered">
           <div class="column is-5-desktop">
               <h1>Iniciar sesión</h1>
@@ -26,10 +30,12 @@
           <div class="column is-5">
               <b-button  class="button is-warning is-fullwidth" @click="$router.push('register')">Crear una cuenta</b-button>
           </div>
-          
         </div>
-      </div>
 
+    </div>
+    </div>
+    
+    </section>
     </div>
 
     
@@ -51,8 +57,8 @@ export default {
 
 
     mounted() {
-        console.log(this.$session.getAll())
-        console.log(this.$session.exists())
+       // console.log(this.$session.getAll())
+       // console.log(this.$session.exists())
     },
     methods: {
         login() {
@@ -69,10 +75,10 @@ export default {
                     if (response.status == 200) {
                         this._checkLoginStatus(response.data.status);
                         if(response.data.status === 'USER_LOGIN_SUCCESS') {
-                            console.log(response.data)
                             this.$session.start()
+                            console.log(response.data)
                             this.$session.set('auth_session.email', this.email);
-                            this.$session.set('auth_session.password', this.password);
+                            this.$session.set('auth_session.password', response.data.password);
                             this.$session.set('auth_session.logged', true);
                             this.$session.set('auth_session.token', response.data.auth_token);
                           
@@ -83,7 +89,6 @@ export default {
                     console.log(err)
                     parent.isLoading = false;
                     this._checkLoginStatus('NOT_RESPONDING');
-                    return err;
                 })
         },
 
@@ -93,7 +98,6 @@ export default {
                 case 'USER_LOGIN_SUCCESS':
                     this.$store.commit('LOGIN')
                     this.getMessage(`Has iniciado sesión.`, 'is-success');
-                    this.$router.push('/account/dashboard');
                     
                 break;
                  case 'USER_LOGIN_FAILED': 

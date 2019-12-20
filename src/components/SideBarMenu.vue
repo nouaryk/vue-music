@@ -6,7 +6,7 @@
                 <i class="fas fa-home"></i> <br /><span v-if="shown">Inicio</span>
             </li>
             
-            <li id="menu-item-2" v-if="$store.state.logged" :class="{'small-text': !shown}" @click="goto('/account/dashboard', 2)">
+            <li id="menu-item-2" v-if="$store.state.logged" :class="{'small-text': !shown}" @click="goto('/account/playlists', 2)">
                 <i class="fas fa-music"></i> <br /><span v-if="shown">Playlists</span>
             </li>
 
