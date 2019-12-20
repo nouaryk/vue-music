@@ -1,5 +1,10 @@
 <template>
-<div class="column">
+<!-- LOGIN COMPONENT -->
+    <app-login  v-if="!$store.state.logged"></app-login>
+<!-- END LOGIN COMPONENT -->
+
+
+<div v-else class="column">
     <section class="hero is-fullheight-with-navbar has-text-white">
         <div class="hero-body">
             <div class="container">
@@ -12,29 +17,39 @@
                     </b-icon>
                 </b-loading>
 
-            <!-- LOGIN COMPONENT -->
-                <app-login  v-if="!$store.state.logged"></app-login>
-            <!-- END LOGIN COMPONENT -->
+            
         
             <!-- SEARCH BOX -->
-            <div v-else class="columns is-centered is-multiline">
+            <div class="columns is-centered is-multiline">
                 <div class="column is-12">
                     <h1>Buscar</h1>
+                    <div class="columns">
+                        <div class="column">
                     <input :class="{'error': error}" id="search" spellcheck="false" v-model="songName" @keyup="error=false" @keyup.enter="searchSong" placeholder="Nombre de la canción o album..." class="search-song" />
+
+                        </div>
+                        <div class="column is-1">
+                        <button @click="searchSong" class="button is-medium is-white is-fullwidth"><i class="fas fa-search"></i></button>
+                            
+                        </div>
+                    </div>
+
                     <div>
                         <span class="is-pulled-right search-info-text">Puedes buscar por el nombre del artista, título o nombre del album.</span>
                     </div>
                 </div>
 
+
                 <div  class="column is-1 song-cover" :key="song.id" v-for="song in songsList" 
                 :style="{ 'background-image': 'url(' + song.album.cover_medium + ')' }">
+                    
                     <div class="overlay-song-info">
                         <div @click="openAddTrackToPlaylistModal(song.id, song.title)" class="song-info" :id="song.id">
-                            <i class="fas fa-plus-square"></i><br/>
-                            <!--<p>{{song.title}}</p>
-                            <span>{{song.artist.name}}</span>-->
+                            <br><i class="fas fa-plus-square"></i><br/>
                         </div>
                     </div>
+                    <b-tooltip  size="is-large" type="is-info" style="width: 100%;" :label="song.artist.name + ' - ' + song.title" position="is-bottom"  always></b-tooltip>                            
+                    
                 </div>
             </div>
             <!-- END SEARCH BOX -->
@@ -45,7 +60,7 @@
     <b-modal :active.sync="isModalOpen" :can-cancel="true" >
        <!-- <div class="close-modal" @click="()=>isModalOpen=false">X</div>-->
         <div class="playlists-container">
-            <h1 class="titled">Agregar {{songName}} a playlist</h1>
+            <h1 class="titled">Añadir {{songName}} a tu playlist </h1>
             <div v-for="playlist in playlists">
                 <li @click="addTrackToPlaylist(playlist._id)"></b-loading> {{playlist.title}} <i  class="fas fa-plus add-track"></i></li>
                 <span>{{ playlist.songs.length}} songs</span>
@@ -81,23 +96,36 @@ export default {
         }
     },
     mounted() {
-        this.getPlaylists();
-        setTimeout(() => {
-            document.getElementById('search').focus();
-        }, 500);
+       this.getPlaylists();
+        console.log(this.playlists)
+        if(this.$store.state.logged) {
+            setTimeout(() => {
+                //document.getElementById('search').focus();
+            }, 1000);
+        }
+
+
+        
     },
     methods: {
         getPlaylists() {
-            axios.get("http://127.0.0.1:3000/getPlaylists")
+            const parent = this;
+
+            
+            axios.post("http://127.0.0.1:3000/getAllPlaylists", {
+                user_id: null,
+                REQUEST_TYPE_GET_ALL: true
+            })
                 .then((response) => {
                     if (response.status == 200) {
-                        this.playlists = response.data;
+                        parent.playlists = response.data.playlists;
                     }
                 }).catch((err) => {
                     console.log('ERROR: ', err)
                 })
+                
         },
-        searchSong(e) {
+        searchSong() {
             if(this.songName.length > 2) {
                 this.isLoading = true;
                 axios({
@@ -214,7 +242,7 @@ h1 {
     text-align: center;
 }
  h1.titled {
-    font-size: 3em;
+    font-size: 2.6em;
     color: #fff;
 }
 .song-cover {
