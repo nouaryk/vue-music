@@ -1,6 +1,7 @@
 <template>
-<section>
-  <div v-if="$store.state.user_playlist_total > 0" class="column is-12 main-content has-text-white ">
+  <div class="column is-10 main-content has-text-white ">
+    <section v-if="$store.state.user_playlist_total > 0" >
+
         <div class="is-pulled-right">
           <i class="fas fa-user-alt"></i> TheRox
         </div>
@@ -28,21 +29,18 @@
 
         <pagination :elements="$store.state.user_playlist_total"  :perPage="perPage"></pagination>
         
-
-
-      </div>
-
-      <div v-else class="column is-12 has-white-text">
+    </section>
+      <div v-else class="has-white-text">
         <p><i>No tienes ninguna playlist.</i> <b-button @click="showPlaylistCreatorHandler" outlined class="button is-danger is-small "  to="/">Crear playlist</b-button> </p>
       
       </div>
+
+
+    <b-modal :component="CreatePlaylist" :perPage="2" :active.sync="openModalPlaylistCreator"
+      :can-cancel="true" :on-cancel="onCancelCreatePlaylist">
+    </b-modal>
   </div>
 
- 
-  <b-modal :component="CreatePlaylist" :perPage="2" :active.sync="openModalPlaylistCreator"
-      :can-cancel="true" :on-cancel="onCancelCreatePlaylist">
-  </b-modal>
-</section>
 </template>
 
 
@@ -66,7 +64,6 @@ export default {
         playlistTitle: '',
         isLoading: false,
         currentPage: 1,
-        _from: 0,
         perPage: 3
     }
   },
@@ -206,6 +203,8 @@ export default {
 </script>
 
 <style>
+
+
 li {
   list-style: none;
   font-size: 1.4em;

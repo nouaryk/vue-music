@@ -2,7 +2,7 @@
       <div class="column is-5-desktop">
         <h1 class="title">Preferencias</h1>
 
-        <b-field label="Correo electrónico">
+        <b-field  label="Correo electrónico">
               <b-input @keyup.native="checkForm" id="email" disabled v-model="email" type="email"></b-input>
          </b-field>
           <b-field label="Contraseña">
@@ -89,3 +89,9 @@ export default {
     }
 }
 </script>
+
+<style >
+.label {
+  color: #fff;
+}
+</style>
