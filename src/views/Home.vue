@@ -25,7 +25,7 @@
                     <h1>Buscar</h1>
                     <div class="columns">
                         <div class="column">
-                    <input :class="{'error': error}" id="search" spellcheck="false" v-model="songName" @keyup="error=false" @keyup.enter="searchSong" placeholder="Nombre de la canción o album..." class="search-song" />
+                    <input :class="{'error': error}" id="search" spellcheck="false" autocomplete="false" v-model="songName" @keyup="error=false" @keyup.enter="searchSong" placeholder="Nombre de la canción o album..." class="search-song" />
 
                         </div>
                         <div class="column is-1">
@@ -61,8 +61,8 @@
        <!-- <div class="close-modal" @click="()=>isModalOpen=false">X</div>-->
         <div class="playlists-container">
             <h1 class="titled">Añadir {{songName}} a tu playlist </h1>
-            <div v-for="playlist in playlists">
-                <li @click="addTrackToPlaylist(playlist._id)"></b-loading> {{playlist.title}} <i  class="fas fa-plus add-track"></i></li>
+            <div v-for="playlist in playlists" :key="playlist._id">
+                <li @click="addTrackToPlaylist(playlist._id)"> {{playlist.title}} <i  class="fas fa-plus add-track"></i></li>
                 <span>{{ playlist.songs.length}} songs</span>
             </div>
         </div>
